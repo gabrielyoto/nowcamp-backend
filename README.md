@@ -1,2 +1,2 @@
-# campnow-backend
-Backend do CampNow
+# nowcamp-backend
+Backend do NowCamp
