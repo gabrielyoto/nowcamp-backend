@@ -3,29 +3,37 @@ const oracledb = require("oracledb")
 const connectionLink = require("../configs/database")
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
-module.exports = () => {
-  async function run() {
-    let connection
+let connection
 
+module.exports = {
+  run() {
     try {
-      connection = await oracledb.getConnection(connectionLink, error => {
+      oracledb.getConnection(connectionLink, (error, newConnection) => {
         if (error) 
-          console.error(err);
-        else
-          console.log('Conectado ao banco de dados');
+          console.error(error)
+        else {
+          console.log('Conectado ao banco de dados')
+          connection = newConnection
+        }
       })
     } catch (error) {
       console.error(error)
     } finally {
-      if (connection) {
-        try {
-          await connection.close()
-        } catch (error) {
-          console.error(error)
+      const close = async () => {
+        if (connection) {
+          try {
+            await connection.close()
+            console.log("Desconectado do banco de dados")
+          } catch (error) {
+            console.error(error)
+          }
         }
       }
+      close()
     }
-  }
+  },
 
-  run()
+  getConnection() {
+    return connection
+  }
 }

@@ -4,7 +4,8 @@ const cors = require("cors")
 
 const { format } = require("./src/utils")
 
-require("./src/database")()
+const { run } = require("./src/database")
+run()
 
 const routes = require("./src/routes")
 
