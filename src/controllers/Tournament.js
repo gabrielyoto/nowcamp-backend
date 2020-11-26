@@ -41,16 +41,10 @@ module.exports = {
         where.push("categoria.MODALIDADE = :modality");
         bind.push(modality);
       }
-      console.log(
-        `
-        SELECT * FROM torneio LEFT OUTER JOIN categoria ON categoria.codigo = torneio.categoria_codigo
-        ${where.length > 0 ? " WHERE " + where.join(" AND ") : ""}
-      `,
-        bind
-      );
       const result = await connection.execute(
         `
-        SELECT * FROM torneio LEFT OUTER JOIN categoria ON categoria.codigo = torneio.categoria_codigo
+        SELECT categoria.nome as categoria, torneio.* FROM torneio LEFT OUTER JOIN
+        categoria ON categoria.codigo = torneio.categoria_codigo 
         ${where.length > 0 ? " WHERE " + where.join(" AND ") : ""}
       `,
         bind
@@ -80,7 +74,7 @@ module.exports = {
     const connection = getConnection();
     if (!connection) return;
     try {
-      const { name, description, award, rules, image, category, date } = body;
+      const { name, description, award, rules, category, date } = body;
       if (
         !name ||
         !description ||
