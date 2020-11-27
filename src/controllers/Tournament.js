@@ -84,6 +84,8 @@ module.exports = {
         !date
       )
         return res.status(400).json({ erro: "Entradas inválidas" });
+      if (new Date(date) < new Date())
+        return res.status(400).json({ erro: "Data inválida" });
       const result = await connection.execute(
         `SELECT codigo FROM categoria WHERE nome = :category`,
         [category]
@@ -132,7 +134,9 @@ module.exports = {
     if (!connection) return;
     try {
       const { tournament } = body;
-      const date = format(new Date());
+      const d = format(new Date());
+      const datestring =
+        d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
       if (!tournament)
         return res.status(400).json({ erro: "Entradas inválidas" });
       if (body.player) {
@@ -162,7 +166,7 @@ module.exports = {
             null, to_date(:subscriptionDate, 'yyyy-mm-dd'), :playerCode, :tournamentCode
           )
         `,
-          [date, body.player, tournament],
+          [datestring, body.player, tournament],
           { autoCommit: true }
         );
       } else if (body.team) {
