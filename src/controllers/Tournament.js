@@ -43,7 +43,7 @@ module.exports = {
       }
       const result = await connection.execute(
         `
-        SELECT categoria.nome as categoria, torneio.* FROM torneio LEFT OUTER JOIN
+        SELECT categoria.nome as categoria, torneio.* FROM torneio INNER JOIN
         categoria ON categoria.codigo = torneio.categoria_codigo 
         ${where.length > 0 ? " WHERE " + where.join(" AND ") : ""}
       `,
