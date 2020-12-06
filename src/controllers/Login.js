@@ -6,6 +6,8 @@ module.exports = {
     if (!connection) return;
     try {
       const { email, password } = body;
+      if (!email || !password)
+        return res.status(400).json({ error: "Entradas inválidas" });
       const user = await connection.execute(
         `
         SELECT * FROM usuario WHERE email = :email
