@@ -97,8 +97,7 @@ module.exports = {
           null, :rules, :award, :name, :description, to_date(:startDate, 'yyyy-mm-dd'), :categoryCode, 1
         )
       `,
-        [rules, Number(award), name, description, date, categoryCode],
-        { autoCommit: true }
+        [rules, Number(award), name, description, date, categoryCode]
       );
       return res.status(201).send("Torneio criado com sucesso");
     } catch (error) {
@@ -134,7 +133,7 @@ module.exports = {
     if (!connection) return;
     try {
       const { tournament } = body;
-      const d = format(new Date());
+      const d = new Date();
       const datestring =
         d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
       if (!tournament)
@@ -166,8 +165,7 @@ module.exports = {
             null, to_date(:subscriptionDate, 'yyyy-mm-dd'), :playerCode, :tournamentCode
           )
         `,
-          [datestring, body.player, tournament],
-          { autoCommit: true }
+          [datestring, body.player, tournament]
         );
       } else if (body.team) {
         const result = await connection.execute(
@@ -196,8 +194,7 @@ module.exports = {
             null, to_date(:subscriptionDate, 'yyyy-mm-dd'), :teamCode, :tournamentCode
           )
         `,
-          [date, body.team, tournament],
-          { autoCommit: true }
+          [datestring, body.team, tournament]
         );
       } else return res.status(400).json({ erro: "Entradas inválidas" });
       return res.status(201).send("Inscrição feita com sucesso");
