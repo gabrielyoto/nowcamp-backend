@@ -12,14 +12,13 @@ module.exports = {
         `
         INSERT INTO equipe VALUES (NULL, :teamName, :category)
       `,
-        [teamName, category],
-        { autoCommit: true }
+        [teamName, category]
       );
 
       return res.status(201).send("Equipe criada com sucesso");
     } catch (error) {
       console.error(error);
-      return res.status(400).json({ error: "Erro ao criar equipe" });
+      return res.status(400).json({ erro: "Erro ao criar equipe" });
     }
   },
 };

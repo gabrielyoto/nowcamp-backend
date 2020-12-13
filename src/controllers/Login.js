@@ -7,7 +7,7 @@ module.exports = {
     try {
       const { email, password } = body;
       if (!email || !password)
-        return res.status(400).json({ error: "Entradas inválidas" });
+        return res.status(400).json({ erro: "Entradas inválidas" });
       const user = await connection.execute(
         `
         SELECT * FROM usuario WHERE email = :email
@@ -15,16 +15,16 @@ module.exports = {
         [email]
       );
       if (!user.rows[0]) {
-        return res.status(400).json({ error: "Email/Senha Inválida" });
+        return res.status(400).json({ erro: "Email/Senha Inválida" });
       }
       if (user.rows[0].SENHA !== password) {
-        return res.status(400).json({ error: "Email/Senha Inválida" });
+        return res.status(400).json({ erro: "Email/Senha Inválida" });
       }
 
       return res.status(200).json(user.rows[0].CODIGO);
     } catch (error) {
       console.error(error);
-      return res.status(400).json({ error: "Erro ao autenticar" });
+      return res.status(400).json({ erro: "Erro ao autenticar" });
     }
   },
 };
